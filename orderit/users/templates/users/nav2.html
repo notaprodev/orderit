@@ -1,0 +1,33 @@
+
+<nav class="navbar navbar-expand-lg navbar-dark indigo">
+  <a class="navbar-brand" href="{% url 'index' %}">Deliver</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav mr-auto">
+    </ul>
+    <ul class="navbar-nav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'signup' %}"> create users</a>
+        </li>
+      <li class="nav-item">
+
+        <form method="post" id="sub" action="{% url 'account_logout' %}">
+        {% csrf_token %}
+        {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+        {% endif %}
+          <a class="nav-link" href="#" onclick="document.getElementById('sub').submit();">logout</a>
+        </form>
+        <script>
+  function fun() {
+                document.getElementById("sub").submit();
+            }
+</script>
+      </li>
+    </ul>
+    </ul>
+  </div>
+</nav>
