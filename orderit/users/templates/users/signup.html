@@ -1,40 +1,38 @@
-{% extends 'users/base.html'%}
-{% block title %}Register{% endblock %}
-{% block body %}
-<div class="container col-md-8">
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width", inital-scale=1.0, shrink-to-fit=no">
+    <title>Deliver</title>
 
-    <div class="row">
-        <div class="col-sm-10 col-md-6 col-md-offset-3">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <br>
-                    <br>
-                    <h3><font size="5">Register for an Account</font></h3>
-                    {% if error_message %}
-                        <p><strong>{{ error_message }}</strong></p>
-                    {% endif %}
-                    <br>
+    <!-- Font Awesome -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+<!-- Google Fonts -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+<!-- Bootstrap core CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+<!-- Material Design Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+</head>
+<body>
 
-                    <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                       {% include 'users/form_template.html' %}
-                        
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-success btn-lg">Submit</button>
-                            </div>
-                        </div>
-                    </form>
-
-                </div>
-                
-                <div class="panel-footer">
-                    Already have an account? <a href="{% url 'login' %}">Click here</a> to log in.
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
-
+<!-- registration/login.html -->
+{% block content %}
+  <h2>Sign up</h2>
+  <form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+      <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+        {% if field.help_text %}
+          <small style="color: grey">{{ field.help_text }}</small>
+        {% endif %}
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      </p>
+    {% endfor %}
+    <button type="submit">Sign up</button>
+  </form>
 {% endblock %}

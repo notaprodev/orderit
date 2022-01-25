@@ -1,5 +1,8 @@
+from django.http import request
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.views import View
+from .forms import *
 from .forms import *
 from django.contrib.auth.decorators import login_required
 from collections import Counter
@@ -77,6 +80,21 @@ def userLogin(request):
     return render(request, 'users/login.html')
 
 
+def Signup(request):
+    if request.method == 'POST':
+        form = CustomSignupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('index')
+    else:
+        form = CustomSignupForm()
+    return render(request, 'users/signup.html', {'form': form})
+
+
 # customer profile view
 def customerProfile(request, pk=None):
     if pk:
@@ -113,6 +131,7 @@ def updateCustomer(request, id):
         'title': "Update Your profile"
     }
     return render(request, 'users/profile_form.html', context)
+
 
 @login_required(login_url='/login/user/')
 def checkout(request, oii=None):
