@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .forms import CustomerSignUpForm, RestuarantSignUpForm, CustomerForm, RestuarantForm
+from .forms import *
 from django.contrib.auth.decorators import login_required
 from collections import Counter
 from django.db.models import Q
@@ -66,10 +66,10 @@ def customerLogin(request):
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                login(request, user)
+        CustomUser = authenticate(username=username, password=password)
+        if CustomUser is not None:
+            if CustomUser.user_role == 'user':
+                login(request, CustomUser)
                 return redirect("profile")
             else:
                 return render(request, 'users/login.html', {'error_message': 'Your account disable'})

@@ -18,7 +18,6 @@ urlpatterns = [
     path('restaurant/orderlist/', views.orderlist, name='orderlist'),
     path('restaurant/menu/', views.menuManipulation, name='mmenu'),
     path('logout/', views.Logout, name='logout'),
-    # path('restaurant/', views.restuarantMenu, name='menu'),
     path('checkout/', views.checkout, name='checkout'),
 
 ]
