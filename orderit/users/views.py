@@ -14,28 +14,10 @@ def index(request):
     return render(request, 'users/index.html', {})
 
 
-def orderplaced(request):
-    return render(request, 'users/orderplaced.html', {})
-
-
-# Showing Restaurants list to Customer
-def restuarent(request):
-    r_object = Restaurant.objects.all()
-    query = request.GET.get('q')
-    if query:
-        r_object = Restaurant.objects.filter(Q(rname__icontains=query)).distinct()
-        return render(request, 'users/restaurents.html', {'r_object': r_object})
-    return render(request, 'users/restaurents.html', {'r_object': r_object})
-
-
 # logout
 def Logout(request):
-    if request.user.dep:
-        logout(request)
-        return redirect("rlogin")
-    else:
-        logout(request)
-        return redirect("index")
+    logout(request)
+    return redirect("index")
 
 
 #### -----------------Customer Side---------------------- ######
@@ -66,13 +48,30 @@ def customerLogin(request):
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
-        CustomUser = authenticate(username=username, password=password)
-        if CustomUser is not None:
-            if CustomUser.user_role == 'user':
-                login(request, CustomUser)
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.user_role == 'user':
+                login(request, user)
                 return redirect("profile")
             else:
                 return render(request, 'users/login.html', {'error_message': 'Your account disable'})
+        else:
+            return render(request, 'users/login.html', {'error_message': 'Invalid Login'})
+    return render(request, 'users/login.html')
+
+
+def userLogin(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.user_role == 'user':
+                login(request, user)
+                return redirect("profile")
+            else:
+                login(request, user)
+                return redirect("dashboard")
         else:
             return render(request, 'users/login.html', {'error_message': 'Invalid Login'})
     return render(request, 'users/login.html')
@@ -114,34 +113,6 @@ def updateCustomer(request, id):
         'title': "Update Your profile"
     }
     return render(request, 'users/profile_form.html', context)
-
-
-"""def restuarantMenu(request, pk=None):
-    menu = Menu.objects.filter(r_id=pk)
-    rest = Restaurant.objects.filter(id=pk)
-
-    items = []
-    for i in menu:
-        item = Item.objects.filter(fname=i.item_id)
-        for content in item:
-            temp = []
-            temp.append(content.fname)
-            temp.append(content.category)
-            temp.append(i.price)
-            temp.append(i.id)
-            temp.append(rest[0].status)
-            temp.append(i.quantity)
-            items.append(temp)
-    context = {
-        'items': items,
-        'rid': pk,
-        'rname': rest[0].rname,
-        'rmin': rest[0].min_ord,
-        'rinfo': rest[0].info,
-        'rlocation': rest[0].location,
-    }
-    return render(request, 'users/menu.html', context)"""
-
 
 @login_required(login_url='/login/user/')
 def checkout(request, oii=None):

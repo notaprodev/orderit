@@ -121,7 +121,7 @@ class Menu(View):
     # shows only meals for current day
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            menu_items = MenuItem.objects.filter(day__icontains='Monday')  # datetime.today().strftime('%A'))
+            menu_items = MenuItem.objects.filter(day__icontains='Tuesday')  # datetime.today().strftime('%A'))
 
             context = {
                 'menu_items': menu_items
@@ -175,7 +175,7 @@ class Dashboard(LoginRequiredMixin, UserPassesTestMixin, View):
         return render(request, 'menu/dashboard.html', context)
 
     def test_func(self):
-        return self.request.user.groups.filter(name='admins').exists()
+        return self.request.user.groups.filter(name='admin').exists()
 
 
 class OrderDetails(LoginRequiredMixin, UserPassesTestMixin, View):
@@ -199,4 +199,4 @@ class OrderDetails(LoginRequiredMixin, UserPassesTestMixin, View):
         return render(request, 'menu/order-details.html', context)
 
     def test_func(self):
-        return self.request.user.groups.filter(name='admins').exists()
+        return self.request.user.groups.filter(name='admin').exists()
