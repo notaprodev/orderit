@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from .models import CustomUser, Customer, Restaurant, Item, Dep, UserRole
+from .models import CustomUser, Customer, Restaurant, Item, Dep, UserRole, Menu
 from django.contrib.auth.forms import UserCreationForm
 
 class CustomerSignUpForm(forms.ModelForm):
@@ -65,3 +65,4 @@ class CustomSignupForm(UserCreationForm):
     class Meta:
         model = CustomUser
         fields = ['first_name', 'last_name', 'username', 'no_cel', 'money', 'user_role', 'dep']
+
