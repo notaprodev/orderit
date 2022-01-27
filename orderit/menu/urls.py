@@ -9,4 +9,5 @@ urlpatterns = [
          name='order-confirmation'),
     path('dashboard/', Dashboard.as_view(), name='dashboard'),
     path('orders/<int:pk>/', OrderDetails.as_view(), name='order-details'),
+    path('newitem/', AddNewItem, name='newitem'),
 ]

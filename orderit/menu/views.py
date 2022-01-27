@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.utils.timezone import datetime as td
 # Create your views here.
 from django.views import View
-
+from .forms import NewMenuItem
 from .models import *
 
 
@@ -200,3 +200,13 @@ class OrderDetails(LoginRequiredMixin, UserPassesTestMixin, View):
 
     def test_func(self):
         return self.request.user.groups.filter(name='admin').exists()
+
+
+def AddNewItem(request):
+    if request.method == 'POST':
+        form = NewMenuItem(request.POST)
+        if form.is_valid():
+            return redirect('dashboard')
+    else:
+        form = NewMenuItem()
+    return render(request, 'menu/newitem.html', {'form': form})
