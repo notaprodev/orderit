@@ -206,6 +206,7 @@ def AddNewItem(request):
     if request.method == 'POST':
         form = NewMenuItem(request.POST)
         if form.is_valid():
+            form.save()
             return redirect('dashboard')
     else:
         form = NewMenuItem()

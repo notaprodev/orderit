@@ -60,8 +60,7 @@ def customerLogin(request):
                 return render(request, 'users/login.html', {'error_message': 'Your account disable'})
         else:
             return render(request, 'users/login.html', {'error_message': 'Invalid Login'})
-    return render(request, 'users/login.html')
-
+    return render(request, 'users/login.hmanagetml')
 
 def userLogin(request):
     if request.method == "POST":
@@ -69,7 +68,7 @@ def userLogin(request):
         password = request.POST['password']
         user = authenticate(username=username, password=password)
         if user is not None:
-            if user.user_role == 'user':
+            if user.user_role.name == 'user':
                 login(request, user)
                 return redirect("profile")
             else:
