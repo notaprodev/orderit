@@ -7,6 +7,7 @@ from django.utils.timezone import datetime as td
 from django.views import View
 from .forms import NewMenuItem
 from .models import *
+from users.models import CustomUser
 
 
 class Order(View):
@@ -211,3 +212,83 @@ def AddNewItem(request):
     else:
         form = NewMenuItem()
     return render(request, 'menu/newitem.html', {'form': form})
+
+
+def orderlist(request):
+    if request.POST:
+        oid = request.POST['orderid']
+        select = request.POST['orderstatus']
+        select = int(select)
+        order = Order.objects.filter(id=oid)
+        if len(order):
+            x = Order.ORDER_STATE_WAITING
+            if select == 1:
+                x = Order.ORDER_STATE_PLACED
+            elif select == 2:
+                x = Order.ORDER_STATE_ACKNOWLEDGED
+            elif select == 3:
+                x = Order.ORDER_STATE_COMPLETED
+            elif select == 4:
+                x = Order.ORDER_STATE_DISPATCHED
+            elif select == 5:
+                x = Order.ORDER_STATE_CANCELLED
+            else:
+                x = Order.ORDER_STATE_WAITING
+            order[0].status = x
+            order[0].save()
+
+    orders = Order.objects.filter(r_id=request.user.restaurant.id).order_by('-timestamp')
+    corders = []
+
+    for order in orders:
+
+        user = CustomUser.objects.filter(id=order.orderedBy.id)
+        user = user[0]
+        corder = []
+        if user.is_restaurant:
+            corder.append(user.restaurant.rname)
+            corder.append(user.restaurant.info)
+        else:
+            corder.append(user.customer.f_name)
+            corder.append(user.customer.phone)
+        items_list = MenuItem.objects.filter(ord_id=order)
+
+        items = []
+        for item in items_list:
+            citem = []
+            citem.append(item.item_id)
+            citem.append(item.quantity)
+            menu = Menu.objects.filter(id=item.item_id.id)
+            citem.append(menu[0].price * item.quantity)
+            menu = 0
+            items.append(citem)
+
+        corder.append(items)
+        corder.append(order.total_amount)
+        corder.append(order.id)
+
+        x = order.status
+        if x == Order.ORDER_STATE_WAITING:
+            continue
+        elif x == Order.ORDER_STATE_PLACED:
+            x = 1
+        elif x == Order.ORDER_STATE_ACKNOWLEDGED:
+            x = 2
+        elif x == Order.ORDER_STATE_COMPLETED:
+            x = 3
+        elif x == Order.ORDER_STATE_DISPATCHED:
+            x = 4
+        elif x == Order.ORDER_STATE_CANCELLED:
+            x = 5
+        else:
+            continue
+
+        corder.append(x)
+        corder.append(order.delivery_addr)
+        corders.append(corder)
+
+    context = {
+        "orders": corders,
+    }
+
+    return render(request, "users/order-list.html", context)

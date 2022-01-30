@@ -10,12 +10,10 @@ urlpatterns = [
     path('profile/restaurant/', views.restaurantProfile, name='rprofile'),
     path('profile/user/', views.customerProfile, name='profile'),
     path('user/create/', views.Signup, name='signup'),
-    path('user/update/<int:id>/', views.updateCustomer, name='cupdate'),
-    path('restaurant/create/', views.createRestaurant, name='rcreate'),
-    path('restaurant/update/<int:id>/', views.updateRestaurant, name='rupdate'),
-    path('restaurant/orderlist/', views.orderlist, name='orderlist'),
-    path('restaurant/menu/', views.menuManipulation, name='mmenu'),
+    # path('user/update/<int:id>/', views.updateCustomer, name='cupdate'),
+    # path('restaurant/orderlist/', views.orderlist, name='orderlist'),
+    # path('restaurant/menu/', views.menuManipulation, name='mmenu'),
     path('logout/', views.Logout, name='logout'),
-    path('checkout/', views.checkout, name='checkout'),
+    # path('checkout/', views.checkout, name='checkout'),
 
 ]

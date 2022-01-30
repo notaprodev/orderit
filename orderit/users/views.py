@@ -3,12 +3,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views import View
 from .forms import *
-from .forms import *
 from django.contrib.auth.decorators import login_required
 from collections import Counter
 from django.db.models import Q
-from .models import Customer, Restaurant, Item, Menu, Order, orderItem, CustomUser
-
+from .models import *
 
 #### ---------- General Side -------------------#####
 
@@ -47,20 +45,6 @@ def customerRegister(request):
 
 
 # Customer Login
-def customerLogin(request):
-    if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.user_role == 'user':
-                login(request, user)
-                return redirect("profile")
-            else:
-                return render(request, 'users/login.html', {'error_message': 'Your account disable'})
-        else:
-            return render(request, 'users/login.html', {'error_message': 'Invalid Login'})
-    return render(request, 'users/login.hmanagetml')
 
 def userLogin(request):
     if request.method == "POST":
@@ -104,7 +88,7 @@ def customerProfile(request, pk=None):
     return render(request, 'users/profile.html', {'user': user})
 
 
-# Create customer profile
+"""# Create customer profile
 def createCustomer(request):
     form = CustomerForm(request.POST or None)
     if form.is_valid():
@@ -117,9 +101,9 @@ def createCustomer(request):
         'title': "Complete Your profile"
     }
     return render(request, 'users/profile_form.html', context)
+"""
 
-
-#  Update customer detail
+"""#  Update customer detail
 def updateCustomer(request, id):
     form = CustomerForm(request.POST or None, instance=request.user.customer)
     if form.is_valid():
@@ -130,9 +114,9 @@ def updateCustomer(request, id):
         'title': "Update Your profile"
     }
     return render(request, 'users/profile_form.html', context)
+"""
 
-
-@login_required(login_url='/login/user/')
+"""@login_required(login_url='/login/user/')
 def checkout(request, oii=None):
     if request.POST:
         addr = request.POST['address']
@@ -176,7 +160,7 @@ def checkout(request, oii=None):
         }
         return render(request, 'users/order.html', context)
 
-
+"""
 ####### ------------------- Restaurant Side ------------------- #####
 
 # creating restuarant account
@@ -227,7 +211,7 @@ def restaurantProfile(request, pk=None):
     return render(request, 'users/rest_profile.html', {'user': user})
 
 
-# create restaurant detail
+"""# create restaurant detail
 @login_required(login_url='/login/restaurant/')
 def createRestaurant(request):
     form = RestuarantForm(request.POST or None, request.FILES or None)
@@ -242,8 +226,8 @@ def createRestaurant(request):
     }
     return render(request, 'users/rest_profile_form.html', context)
 
-
-# Update restaurant detail
+"""
+"""# Update restaurant detail
 @login_required(login_url='/login/restaurant/')
 def updateRestaurant(request, id):
     form = RestuarantForm(request.POST or None, request.FILES or None, instance=request.user.restaurant)
@@ -255,10 +239,10 @@ def updateRestaurant(request, id):
         'title': "Update Your Restaurant profile"
     }
     return render(request, 'users/rest_profile_form.html', context)
-
+"""
 
 # add  menu item for restaurant
-@login_required(login_url='/login/restaurant/')
+"""@login_required(login_url='/login/restaurant/')
 def menuManipulation(request):
     if not request.user.is_authenticated:
         return redirect("rlogin")
@@ -310,8 +294,8 @@ def menuManipulation(request):
         "username": request.user.username,
     }
     return render(request, 'users/menu_modify.html', context)
-
-
+"""
+"""
 def orderlist(request):
     if request.POST:
         oid = request.POST['orderid']
@@ -390,3 +374,4 @@ def orderlist(request):
     }
 
     return render(request, "users/order-list.html", context)
+"""
