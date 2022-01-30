@@ -54,7 +54,7 @@ def userLogin(request):
         if user is not None:
             if user.user_role.name == 'user':
                 login(request, user)
-                return redirect("profile")
+                return redirect("index")
             else:
                 login(request, user)
                 return redirect("dashboard")
