@@ -31,7 +31,7 @@ class Order(View):
             }
             return render(request, 'menu/neworder.html', context)
         else:
-            return redirect('account_login')
+            return redirect('login')
 
     def post(self, request, *args, **kwargs):
         global price, item_ids
