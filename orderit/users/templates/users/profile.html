@@ -14,76 +14,48 @@
 <!-- Material Design Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
 </head>
-{% block title %}Profile{% endblock %}
-
+{% include 'users/navigation.html' %}
+{% block title %}{% endblock %}
+{% include 'users/footer.html' %}
 {% block body %}
-<br>
-	<div class="container col-md-8">
-		 
-		<div class="row">
-		<div class=" col-md-11 toppad">   
-   
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <h3 class="panel-title text-info "><strong>{{user.customer.f_name}}  {{user.customer.l_name}}</strong></h3>
-                          </div>
-                          <br>
-                          <div class="panel-body">
-                            <div class="row">
-                              
-                              <div class=" col-md-9 col-lg-9 "> 
-                                <table class="table table-user-information">
-                                  <tbody>
-                                  	<tr>
-                                      <td>User Name:</td>
-                                      <td>{{user.username}}</td>
-                                    </tr>
-                                    <tr>
-                                      <td>First Name:</td>
-                                      <td>{{user.customer.f_name}}</td>
-                                    </tr>
-                                    <tr>
-                                      <td>Last Name:</td>
-                                      <td>{{user.customer.l_name}}</td>
-                                    </tr>
-                                    <tr>
-                                      <td>City:</td>
-                                      <td>{{user.customer.city}}</td>
-                                    </tr>
-                                
-                                      <td>Address:</td>
-                                      <td>{{user.customer.address}}</td>
-                                    </tr>
-                                    <tr>
-                                      <td>Email:</td>
-                                      <td><a href="#">{{user.email}}</a></td>
-                                    </tr>
-                                    <tr>
-                                      <td>Phone Number:</td>
-                                      <td>{{user.customer.phone}}
-                                      </td>
-                                         
-                                    </tr>
-                                   
-                                  </tbody>
-                                </table>
-                                <div class="container">
-                                <div class="row">
-                                  <div class="col">
-                                  <a class="btn btn-success btn-lg" href="">Edit</a>
-                                </div>
-                                <!--<div class="col">
-                                   <a class="btn btn-success btn-lg" href="">Complete profile</a>
-                                </div>-->
-                                </div>
-                  				</div>
-                  
-                </div>
-              </div>
+<div class="container col-md-8">
+<div class="row my-3 p-3">
+        <img class="rounded-circle account-img" src="{{ user.profile.avatar.url }} " style="cursor: pointer;"/>
+    </div>
+    {% if user_form.errors %}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <div id="form_errors">
+                {% for key, value in user_form.errors.items %}
+                    <strong>{{ value }}</strong>
+                {% endfor %}
             </div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
-        </div>
-		</div>
-	</div>
-  <br>
+    {% endif %}
+    <div class="form-content">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label class="small mb-1">Username:</label>
+                            {{ user_form.username }}
+                        <label class="small mb-1">Email:</label>
+                            {{ user_form.email }}
+                    </div>
+                    <div class="form-group">
+                        <a href="{% url 'password_change'%}">Change Password</a>
+                    </div>
+                    <label class="small mb-1">Cel:</label>
+                            {{ user_form.no_cel }}
+                </div>
+            </div>
+            <br><br>
+            <button type="submit" class="btn btn-dark btn-lg">Save Changes</button>
+            <button type="reset" class="btn btn-dark btn-lg">Reset</button>
+        </form>
+    </div>
+</div>
 {% endblock%}
