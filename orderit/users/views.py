@@ -324,7 +324,7 @@ def menuManipulation(request):
         "items": items,
         "username": request.user.username,
     }
-    return render(request, 'users/menu_modify.html', context)
+    return render(request, 'menu/menu_modify.html', context)
 """
 """
 def orderlist(request):

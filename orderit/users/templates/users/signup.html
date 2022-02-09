@@ -17,8 +17,14 @@
 <body>
 
 <!-- registration/login.html -->
+{% include 'menu/navigation.html' %}
+{% block title %}{% endblock %}
+{% include 'users/footer.html' %}
 {% block content %}
-  <h2>Sign up</h2>
+<div class="container col-md-8">
+  <div class="row my-3 p-3">
+
+<br>
   <form method="post">
     {% csrf_token %}
     {% for field in form %}
@@ -35,4 +41,6 @@
     {% endfor %}
     <button type="submit">Sign up</button>
   </form>
+  </div>
+</div>
 {% endblock %}
