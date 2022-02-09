@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from collections import Counter
 from django.db.models import Q
 from .models import *
-
+from .forms import UpdateUserForm,UpdateProfileForm
 
 #### ---------- General Side -------------------#####
 
@@ -84,31 +84,17 @@ def Signup(request):
 
 
 # customer profile view
-"""def customerProfile(request, pk=None):
-    if pk:
-        user = CustomUser.objects.get(pk=pk)
-    else:
-        user = request.user
-
-    return render(request, 'users/profile.html', {'user': user})"""
-
-
 @login_required
 def profile(request):
     if request.method == 'POST':
         user_form = UpdateUserForm(request.POST, instance=request.user)
-        profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
-
-        if user_form.is_valid() and profile_form.is_valid():
+        if user_form.is_valid():
             user_form.save()
-            profile_form.save()
             messages.success(request, 'Your profile is updated successfully')
             return redirect(to='profile')
     else:
         user_form = UpdateUserForm(instance=request.user)
-        profile_form = UpdateProfileForm(instance=request.user)
-
-    return render(request, 'users/profile.html', {'user_form': user_form, 'profile_form': profile_form})
+    return render(request, 'users/profile.html', {'user_form': user_form})
 
 
 class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):

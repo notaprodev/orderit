@@ -122,7 +122,9 @@ class Menu(View):
     # shows only meals for current day
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            menu_items = MenuItem.objects.filter(day__icontains='Tuesday')  # datetime.today().strftime('%A'))
+            #menu_items = MenuItem.objects.filter(day__icontains='Tuesday')
+            menu_items = MenuItem.objects.all()
+            # datetime.today().strftime('%A'))
 
             context = {
                 'menu_items': menu_items
@@ -179,17 +181,17 @@ class Dashboard(LoginRequiredMixin, UserPassesTestMixin, View):
         return self.request.user.groups.filter(name='admin').exists()
 
 
-class OrderDetails(LoginRequiredMixin, UserPassesTestMixin, View):
-    def get(self, request, pk, *args, **kwargs):
-        order = OrderModel.objects.get(pk=pk)
+class OrderDetails(View):
+    def get(self, request, *args, **kwargs):
+        order = OrderModel.objects.all()
         context = {
             'order': order
         }
 
         return render(request, 'menu/order-details.html', context)
 
-    def post(self, request, pk, *args, **kwargs):
-        order = OrderModel.objects.get(pk=pk)
+    """def post(self, request, *args, **kwargs):
+        order = OrderModel.objects.get()
         order.is_shipped = True
         order.save()
 
@@ -197,7 +199,7 @@ class OrderDetails(LoginRequiredMixin, UserPassesTestMixin, View):
             'order': order
         }
 
-        return render(request, 'menu/order-details.html', context)
+        return render(request, 'menu/order-details.html', context)"""
 
     def test_func(self):
         return self.request.user.groups.filter(name='admin').exists()
@@ -205,12 +207,13 @@ class OrderDetails(LoginRequiredMixin, UserPassesTestMixin, View):
 
 def AddNewItem(request):
     if request.method == 'POST':
-        form = NewMenuItem(request.POST)
+        form = NewMenuItem(request.POST, instance=request.user)
         if form.is_valid():
+            image = form.cleaned_data.get("image")
             form.save()
             return redirect('dashboard')
     else:
-        form = NewMenuItem()
+        form = NewMenuItem(instance=request.user)
     return render(request, 'menu/newitem.html', {'form': form})
 
 

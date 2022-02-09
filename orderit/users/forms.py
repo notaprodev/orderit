@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from .models import *
 from django.contrib.auth.forms import UserCreationForm
 
+
 class CustomerSignUpForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
 
@@ -51,7 +52,6 @@ class NewUser(forms.ModelForm):
             return user
 
 
-
 class CustomSignupForm(UserCreationForm):
     class Meta:
         model = CustomUser
@@ -62,16 +62,24 @@ class UpdateUserForm(forms.ModelForm):
     username = forms.CharField(max_length=100,
                                required=True,
                                widget=forms.TextInput(attrs={'class': 'form-control'}))
-    email = forms.EmailField(max_length=100,
+    first_name = forms.CharField(max_length=100, required=False,
+                                  widget=forms.TextInput(attrs={'class': 'form-control'}))
+    last_name = forms.CharField(max_length=100, required=False,
+                                  widget=forms.TextInput(attrs={'class': 'form-control'}))
+    first_name = forms.CharField(max_length=100, required=False,
+                                  widget=forms.TextInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(max_length=100, required=False,
                              widget=forms.TextInput(attrs={'class': 'form-control'}))
+    no_cel = forms.CharField(max_length=100, required=False,
+                              widget=forms.TextInput(attrs={'class': 'form-control'}))
 
     class Meta:
         model = User
-        fields = ['username', 'email']
+        fields = ['username', 'first_name', 'last_name', 'email', 'no_cel']
 
 
 class UpdateProfileForm(forms.ModelForm):
-    avatar = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control-file'}))
+    no_cel = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control-file'}))
     bio = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5}))
 
     class Meta:

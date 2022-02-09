@@ -20,7 +20,7 @@ class MenuItem(models.Model):
     objects = None
     name = models.CharField(max_length=100)
     description = models.TextField()
-    image = models.ImageField(upload_to='menu_images/')
+    image = models.ImageField(upload_to='menu_images/', blank=True, null=True)
     price = models.DecimalField(max_digits=5, decimal_places=2)
     category = models.ManyToManyField('Category', related_name='item')
     day = models.CharField(choices=days, max_length=14, default=MONDAY)
