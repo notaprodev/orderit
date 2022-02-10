@@ -1,6 +1,5 @@
 from django.db import models
 
-
 # Create your models here.
 from django.utils.timezone import now
 
@@ -16,7 +15,8 @@ class MenuItem(models.Model):
             (FRIDAY, 'Friday')]
     OPEN = 'open'
     CLOSED = 'closed'
-    status = [(OPEN, 'open'), (CLOSED, 'closed')]
+    DRAFT = 'draft'
+    status = [(OPEN, 'open'), (CLOSED, 'closed'), (DRAFT, 'draft')]
     objects = None
     name = models.CharField(max_length=100)
     description = models.TextField()

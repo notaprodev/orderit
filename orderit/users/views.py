@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from collections import Counter
 from django.db.models import Q
 from .models import *
-from .forms import UpdateUserForm,UpdateProfileForm
+from .forms import UpdateUserForm
 
 #### ---------- General Side -------------------#####
 

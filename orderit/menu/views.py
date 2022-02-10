@@ -295,3 +295,28 @@ def orderlist(request):
     }
 
     return render(request, "users/order-list.html", context)
+
+
+# show orders to users
+class Showorders(View):
+    def get(self, request, *args, **kwargs):
+        # get the current date
+        orders = OrderModel.objects.filter()
+
+        # loop through the orders and add the price value, check if order is not shipped
+        unshipped_orders = []
+        total_revenue = 0
+        for order in orders:
+            total_revenue += order.price
+
+            if not order.is_shipped:
+                unshipped_orders.append(order)
+
+        # pass total number of orders and total revenue into template
+        context = {
+            'orders': unshipped_orders,
+            'total_revenue': total_revenue,
+            'total_orders': len(orders)
+        }
+
+        return render(request, 'menu/orders.html', context)

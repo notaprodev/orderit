@@ -8,6 +8,6 @@ urlpatterns = [
     path('order-confirmation/<int:pk>', OrderConfirmation.as_view(),
          name='order-confirmation'),
     path('dashboard/', Dashboard.as_view(), name='dashboard'),
-    path('orders/', OrderDetails.as_view(), name='order-details'),
+    path('orders/', Showorders.as_view(), name='order-details'),
     path('newitem/', AddNewItem, name='newitem'),
 ]
